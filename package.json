@@ -1,0 +1,27 @@
+{
+  "name": "road_accidents",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm run dev",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "import:data": "cd backend && npm run import:data",
+    "calculate:zones": "cd backend && npm run calculate:zones",
+    "build:frontend": "cd frontend && npm run build",
+    "start:backend": "cd backend && npm run start"
+  },
+  "keywords": [
+    "road-accidents",
+    "mapping",
+    "prisma",
+    "react",
+    "leaflet"
+  ],
+  "author": "",
+  "license": "ISC",
+  "description": "Road Accident Mapping System with Red/Yellow/Green Risk Zones",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

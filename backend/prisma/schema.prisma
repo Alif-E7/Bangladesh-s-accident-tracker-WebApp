@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Location {
+  id        Int        @id @default(autoincrement())
+  region    String?
+  latitude  Float
+  longitude Float
+  accidents Accident[]
+}
+
+model WeatherCondition {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  accidents Accident[]
+}
+
+model RoadCondition {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  accidents Accident[]
+}
+
+model VehicleType {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  accidents Accident[]
+}
+
+model TrafficControl {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  accidents Accident[]
+}
+
+model VictimCategory {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  accidents Accident[]
+}
+
+model Accident {
+  id               Int       @id @default(autoincrement())
+  accidentSerialNo String?
+  accidentDatetime DateTime?
+  peakPeriod       String?
+  deaths           Int?      @default(0)
+  injuries         Int?      @default(0)
+  vehicleCount     Int?
+  sourceFile       String?
+  createdAt        DateTime  @default(now())
+
+  // Additional CSV fields for advanced filtering
+  lightCondition      String?
+  lighting            String?
+  roadSurfaceType     String?
+  roadNature          String?
+  roadClassification  String?
+  placeCharacteristic String?
+  roadConnectionPoint String?
+  trafficCondition    String?
+  junction            String?
+  year                Int?
+  month               String?
+
+  locationId Int
+  location   Location @relation(fields: [locationId], references: [id])
+
+  weatherConditionId Int?
+  weatherCondition   WeatherCondition? @relation(fields: [weatherConditionId], references: [id])
+
+  roadConditionId Int?
+  roadCondition   RoadCondition? @relation(fields: [roadConditionId], references: [id])
+
+  vehicleTypeId Int?
+  vehicleType   VehicleType? @relation(fields: [vehicleTypeId], references: [id])
+
+  trafficControlId Int?
+  trafficControl   TrafficControl? @relation(fields: [trafficControlId], references: [id])
+
+  victimCategoryId Int?
+  victimCategory   VictimCategory? @relation(fields: [victimCategoryId], references: [id])
+}
+
+model AlertZone {
+  id             Int      @id @default(autoincrement())
+  latitude       Float
+  longitude      Float
+  riskScore      Float
+  alertLevel     String   // RED, YELLOW, GREEN
+  accidentCount  Int
+  totalDeaths    Int      @default(0)
+  totalInjuries  Int      @default(0)
+  radiusKm       Float    @default(0.5)
+  regionName     String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
